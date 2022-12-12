@@ -1,0 +1,106 @@
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address: { address: 0.0.0.0, port_value: 8082 }
+static_resources:
+  listeners:
+    - name: listener_0
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 8080 }
+      filter_chains:
+        - filters:
+          - name: envoy.http_connection_manager
+            config:
+              codec_type: auto
+              stat_prefix: ingress_http
+              upgrade_configs:
+                - upgrade_type: websocket
+              route_config:
+                name: local_route
+                virtual_hosts:
+                  - name: local_service
+                    domains: ["*"]
+                    routes:
+                      - match: { prefix: "/" }
+                        route:
+                          cluster: echo_service
+                          max_grpc_timeout: 0s
+                    cors:
+                      allow_origin_string_match:
+                        - prefix: "*"
+                      allow_methods: GET, PUT, DELETE, POST, OPTIONS
+                      allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,Authorization
+                      max_age: "1728000"
+                      expose_headers: custom-header-1,grpc-status,grpc-message
+              http_filters:
+                - name: envoy.grpc_web
+                - name: envoy.cors
+                - name: envoy.router
+
+          tls_context:
+            common_tls_context:
+              alpn_protocols: "h2"
+              tls_certificates:
+                - certificate_chain:
+                    inline_string: |
+                      -----BEGIN CERTIFICATE-----
+                      MIID3TCCAsWgAwIBAgIUUXqas7k2XL6qpR7dO6Lus8fHBsswDQYJKoZIhvcNAQEL
+                      BQAwfjELMAkGA1UEBhMCVVMxDjAMBgNVBAgMBVRleGFzMQ8wDQYDVQQHDAZEYWxs
+                      YXMxFDASBgNVBAoMC0FCQyBDb21wYW55MQswCQYDVQQLDAJCQzENMAsGA1UEAwwE
+                      Sm9objEcMBoGCSqGSIb3DQEJARYNYWJjQGdtYWlsLmNvbTAeFw0yMjExMDUwNzIw
+                      MDFaFw0yMjEyMDUwNzIwMDFaMH4xCzAJBgNVBAYTAlVTMQ4wDAYDVQQIDAVUZXhh
+                      czEPMA0GA1UEBwwGRGFsbGFzMRQwEgYDVQQKDAtBQkMgQ29tcGFueTELMAkGA1UE
+                      CwwCQkMxDTALBgNVBAMMBEpvaG4xHDAaBgkqhkiG9w0BCQEWDWFiY0BnbWFpbC5j
+                      b20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDb4yCuU8KCLf+ra0jR
+                      vv8LUvywdV9fBtBRm7VgFwjnW0NeMJLlAKXB1cWzGlWASFq1TtYAVEtEdSe79JEL
+                      q+YQEOcwUy75kv36iLyNTpW2bbhHIeQ1TYx5hRUwRnVRrGnNct/qqi5/AoSnrqjY
+                      TmBw9nylnySZBn0qVUlvTlFhpNNHLJDT1ZXyIpVCQxVnyBR6MtvG/Kl0Ara+MvGf
+                      BaFhZ+yCYW3uAimexsnJ6IDvHStwZ2xDbaYOqyvLUUAvtsu/i+2kPgxN2JrICgGs
+                      yssKsnd6Mnt8HNyWZarH7iVhIgHXlyWovLHej8PGVhNn+p2U2nA7EyRXbVV6tsBW
+                      sA9RAgMBAAGjUzBRMB0GA1UdDgQWBBThRwzWK0uTFPBO9GRqKK/pNOvPWTAfBgNV
+                      HSMEGDAWgBThRwzWK0uTFPBO9GRqKK/pNOvPWTAPBgNVHRMBAf8EBTADAQH/MA0G
+                      CSqGSIb3DQEBCwUAA4IBAQCWQj9DgvlPx4thTVuXPWmQqkfzkWm4uEVP52VcnPsu
+                      F6A/abZsiJnWPRfbNZ24FqoX1O2iveBOiWNPF5B8XMsqs9sevfqOwA6WJ+jkYW7N
+                      Z+CDJoHcCGR/VwlBoM+WIYsmy+d47k54qEDk1gqUUxd7vJ9GcoHAtZcDnErQmdER
+                      CACB13BaZ+9FJQxb//M1gQxJp0FO0GMzhwwDChYvqj83jEOTyhlgxFFchRn7IDrH
+                      HVSYs1256uO7OZDj0fn2DnbsG+RkqN2JoGPejoy5R8jv5tGxSz1Ac5kbhxBxBH8u
+                      i2l8mGzD3A98PNsN6o8x/AtkFylf21W20Vn/rNdp5cAs
+                      -----END CERTIFICATE-----
+
+                  private_key:
+                    inline_string: |
+                      -----BEGIN RSA PRIVATE KEY-----
+                      MIIEpQIBAAKCAQEA2+MgrlPCgi3/q2tI0b7/C1L8sHVfXwbQUZu1YBcI51tDXjCS
+                      5QClwdXFsxpVgEhatU7WAFRLRHUnu/SRC6vmEBDnMFMu+ZL9+oi8jU6Vtm24RyHk
+                      NU2MeYUVMEZ1UaxpzXLf6qoufwKEp66o2E5gcPZ8pZ8kmQZ9KlVJb05RYaTTRyyQ
+                      09WV8iKVQkMVZ8gUejLbxvypdAK2vjLxnwWhYWfsgmFt7gIpnsbJyeiA7x0rcGds
+                      Q22mDqsry1FAL7bLv4vtpD4MTdiayAoBrMrLCrJ3ejJ7fBzclmWqx+4lYSIB15cl
+                      qLyx3o/DxlYTZ/qdlNpwOxMkV21VerbAVrAPUQIDAQABAoIBAQDXqOMDt2jdLupE
+                      IPwRo2cXnzPwiZ2ZYOBuOe5hKRZ1ewAO4EsiSUlJXDYDnH9hSxWUH5cqSYJsyQ7I
+                      fGzJ6rXA6iMlNWCsLOvmjbeITBvwCZqkQWxGjyGIiesnJuOn0BcRBmrxCCqELV8X
+                      6uj1BaH3CPllozlM0J1wKKfWgBS3UxTqRcc1H+cErVIudDphkKHe+E+pTRlqeWZr
+                      Q2voifSpRaOs6K8fQkQCT+YuAJ6lmjhX3M+XT/3zZ8leZNZDGCGUME2y872HBOES
+                      I5oJbqx40IlFXllTw7VbilrDdugVXlEtmS79qujUWF12Lb27Ko4Fp0Cp4Z50Ub95
+                      nvIYjklFAoGBAPAekNld5Gys/XgxPZdYeGfdTlnbk2ndEX2eMsbqbgfHFzybMcx7
+                      w51R5KFvmPopfLCqFu/jokFzQAqEYFX60QdHiyz7nmPeoTTgGUk/xgXaIP3G/360
+                      636wbkYzi2SbRigo5OcxOCCXakJ6bKVPYX9yAMTPwZUmghqwI6G2y4DjAoGBAOpu
+                      A1qqrmvnRBSAHnT/9iwBz6OououwoLpb5/BhzI/eNk0xLiw+6bbSbQG3ZYVKHS4a
+                      KK0jfj/0xdWVgRSNN7rijN3Y6rkfiBq6MhOruXHWJsz969k5OSDy+KNmhIE3AelR
+                      rnApDs2epqek9ivY4XjIcMMr/+AjEetFH2K7Vyk7AoGAWQkscr1DDx0SG7g+e1kd
+                      xH2mKOGnhrCnZKn9cA7LX+zt69YsIAOgZDxSh53m3pP1nVhkiu0gZB6FF6FAS4Fm
+                      csmPjM18TNHnesDB/4w7ND5Oz2szn9scG2z2ZueD/3koCYooXqW8hzE+AIp+sMl/
+                      gI9YQ6I5yMFvqs+3VqZ+TTsCgYEA4onrPduAcA9tD657QC71UbNyVsG/eyv1NgGI
+                      UhgAGOrwaInlB6bILP6NjkIOnc5wAlQPCLkq0F0WLH6r3RNWToeM/vkWYkyhNsrF
+                      h5LDwsjid+fM2P5eQYPqV+TCmSdx9mkTe5mBj5wHiit0JA0SXai8py5Gtu7M6yDB
+                      4qQM528CgYEA2s6ltVZ+vTrEXHS6oixUr4Pj5C7k9g4xEJrCFN5Q7tT+aBM/6fGX
+                      AWBTUAbhYgRUKGK+9aYcnbcyPVPnflkx7whF8d54dSsSc/hbz18vD7plF9AstJW3
+                      UH1ZCp6FR1VZ+lZvnrxXQXd4oVU8a1VyZkb3WNHO8Nz8BIW4kJsNFDQ=
+                      -----END RSA PRIVATE KEY-----
+
+  clusters:
+    - name: echo_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      http2_protocol_options: {}
+      lb_policy: round_robin
+      hosts: [{ socket_address: { address: host.docker.internal, port_value: 50051 }}]

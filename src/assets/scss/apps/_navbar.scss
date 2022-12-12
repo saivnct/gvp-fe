@@ -1,0 +1,67 @@
+.header-nav {
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  height: 7rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0808;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.1);
+  z-index: 1000;
+}
+
+
+.nav-container {
+  margin: 1rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+
+  &__left {
+    // background-color: aqua;
+  }
+
+  &__right {
+    // background-color: salmon;
+    display: flex;
+    align-items: center;
+  }
+
+  &__button {
+    margin-right: 5px;
+    padding: 0;
+    border: none;
+    background: none;
+    img {
+      height: 2.5rem;
+    }
+  }
+
+  &__logo {
+
+  }
+
+  &__logo-img {
+    height: 3.4rem;
+
+    @media only screen and (max-width: 576px) {
+      height: 2.4rem;
+    }
+  }
+
+
+}
+
+.search-input {
+  @media only screen and (max-width: 576px) {
+    width: 15rem;
+  }
+}
+
+.ant-menu-item-selected {
+  background-color: #868686 !important;
+}

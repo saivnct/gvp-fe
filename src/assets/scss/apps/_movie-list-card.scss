@@ -1,0 +1,25 @@
+.movie-list-card {
+  height: 10rem;
+  width: 25rem;
+  border: 1px solid #edf2f9;
+  border-radius: 0.2rem;
+  cursor: pointer;
+
+  @media only screen and (max-width: 1200px) {
+    width: 20rem;
+  }
+
+  @media only screen and (max-width: 576px) {
+    width: 34rem;
+    height: 12rem;
+  }
+
+  &__img {
+    height: 9.7rem;
+    width: 8rem;
+    object-fit: cover;
+  }
+
+}
+
+

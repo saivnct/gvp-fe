@@ -1,0 +1,63 @@
+.movie-card {
+  height: 20rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  @media only screen and (max-width: 576px) {
+    margin-left: 2rem;
+    height: 27rem;
+  }
+
+  &__img-cover {
+    height: 19.7rem;
+    transition: all 1s ease-in-out;
+    border: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    object-fit: contain;
+    background: black;
+
+    &:hover {
+      opacity: 0;
+      transition-delay: 1s;
+    }
+
+    @media only screen and (max-width: 576px) {
+      height: 26.7rem;
+    }
+  }
+
+  &__img-cover-gif {
+    height: 19.7rem;
+    border: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+
+    @media only screen and (max-width: 576px) {
+      height: 26.7rem;
+    }
+  }
+
+  &__score {
+    width: 50%;
+    //--bs-bg-opacity: 0.1;
+    //background-color: gray;
+    //border-bottom: 2px solid white;
+    //border-right: 2px solid white;
+    border-radius: 5px 5px 5px 5px;
+    z-index: 2;
+
+    //@media only screen and (max-width: 576px) {
+    //  width: 70%;
+    //}
+  }
+
+
+}

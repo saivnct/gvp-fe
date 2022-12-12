@@ -1,0 +1,126 @@
+<nz-spin [nzSpinning]="isLoading" [nzTip]=tipLoading>
+
+  <div class="m-40">
+
+    <h4 class="m-b-10">Upload</h4>
+    <h4 class="m-b-10">News ID: {{newsId}}</h4>
+
+    <form nz-form [formGroup]="uploadForm" class="m-v-20">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12" *ngFor="let control of controlArray" [hidden]="!control.show">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzFor]="control.control">{{ control.controlName }}</nz-form-label>
+            <nz-form-control>
+              <input *ngIf="control.type==='input'" nz-input placeholder="{{ control.placeholder }}" [formControlName]="control.control" [attr.id]="control.control"  />
+
+              <nz-select  *ngIf="control.type==='selectUpload'" [formControlName]="control.control" nzPlaceHolder="{{ control.placeholder }}">
+                <nz-option *ngFor="let item of uploadTypes | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                >
+                </nz-option>
+              </nz-select>
+
+              <nz-select  *ngIf="control.type==='selectStream'"
+                          [formControlName]="control.control" nzPlaceHolder="{{ control.placeholder }}">
+                <nz-option *ngFor="let item of streamTypes | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                >
+                </nz-option>
+              </nz-select>
+
+              <label class="m-r-15" nz-checkbox *ngIf="control.type==='checkboxOnDemand'"
+                     [formControlName]="control.control"></label>
+
+              <label class="m-r-15" nz-checkbox *ngIf="control.type==='checkboxMainPreview'"
+                     [formControlName]="control.control"></label>
+
+              <nz-select *ngIf="control.type==='selectResolution'"
+                         [formControlName]="control.control" nzPlaceHolder="{{ control.placeholder }}" >
+                <nz-option *ngFor="let item of resolutions | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                >
+                </nz-option>
+              </nz-select>
+
+              <nz-select *ngIf="control.type==='selectMediaType'"
+                         [formControlName]="control.control" nzPlaceHolder="{{ control.placeholder }}" >
+                <nz-option *ngFor="let item of mediaTypes | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                >
+                </nz-option>
+              </nz-select>
+
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <nz-upload *ngIf="fUploadType?.value == uploadTypes.MEDIA_VIDEO_LOCAL || fUploadType?.value == uploadTypes.PREVIEW_IMAGE_LOCAL"
+                 nzType="drag"
+                 [nzMultiple]="true"
+                 [(nzFileList)]="fileList"
+                 [nzBeforeUpload]="beforeUpload"
+                 (nzChange)="handleChange($event)"
+                 [nzFileListRender]="fileListTpl"
+      >
+        <p class="ant-upload-drag-icon">
+          <span nz-icon nzType="inbox"></span>
+        </p>
+        <p class="ant-upload-text">Click or drag file to this area to upload</p>
+        <p class="ant-upload-hint">
+          Support for a single or bulk upload
+        </p>
+
+        <ng-template #fileListTpl let-list>
+          <nz-list nzBordered>
+            <nz-list-item *ngFor="let item of list; let i = index" class="d-flex justify-content-between">
+              <span nz-typography><mark>[{{ item.status }}]</mark> {{ item.url }}</span>
+              {{ item.name }}
+              <div class="w-30">
+                <span nz-icon nzType="table" nzTheme="outline" class="m-r-10"></span>
+                <nz-select class="w-50" formControlName="resolution_{{i}}" *ngIf="fUploadType?.value == uploadTypes.MEDIA_VIDEO_LOCAL">
+                  <nz-option *ngFor="let item of resolutions | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                  >
+                  </nz-option>
+                </nz-select>
+                <nz-select class="w-50" formControlName="mediaType_{{i}}" *ngIf="fUploadType?.value == uploadTypes.PREVIEW_IMAGE_LOCAL">
+                  <nz-option *ngFor="let item of mediaTypes | keyvalue: unsorted" nzValue="{{item.value}}" nzLabel="{{item.key}}"
+                  >
+                  </nz-option>
+                </nz-select>
+                <label class="m-l-10" nz-checkbox formControlName="mainFile_{{i}}">Main</label>
+
+                <button nz-button (click)="deleteSelectFile(item)" nzType="default" class="m-l-10">
+                  <span nz-icon nzType="delete" class="text-danger"></span>
+                </button>
+              </div>
+
+            </nz-list-item>
+          </nz-list>
+        </ng-template>
+
+      </nz-upload>
+
+      <button nz-button nzType="default" nzSize="small" nzShape="round" class="m-t-10 text-danger"
+              *ngIf="fUploadType?.value == uploadTypes.MEDIA_VIDEO_LOCAL || fUploadType?.value == uploadTypes.PREVIEW_IMAGE_LOCAL"
+              (click)="clearSelectedFiles()"
+      >Clear All File</button>
+
+      <!--    <nz-upload *ngIf="fStreamType?.value == streamTypes.ON_DEMAND && fUploadType?.value == uploadTypes.MEDIA_VIDEO_LOCAL"-->
+      <!--               [nzBeforeUpload]="beforeUpload"-->
+      <!--               (nzChange)="handleChange($event)"-->
+      <!--               nzDirectory>-->
+      <!--      <button nz-button>-->
+      <!--        <span nz-icon nzType="upload"></span>-->
+      <!--        Upload Directory-->
+      <!--      </button>-->
+      <!--    </nz-upload>-->
+
+
+      <button nz-button nzType="primary" nzSize="small" nzShape="round" class="m-20 mx-auto"
+              (click)="doUpload()"
+      >Upload <span nz-icon nzType="upload"></span></button>
+
+    </form>
+
+
+
+  </div>
+
+</nz-spin>

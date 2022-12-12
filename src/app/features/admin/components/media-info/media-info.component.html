@@ -1,0 +1,68 @@
+<div class="m-20">
+  <button nz-button nzType="default" nzSize="small" nzShape="round" class="m-t-5 m-b-15" routerLink="/admin/news"
+  ><span nz-icon nzType="arrow-left" class="m-t-0 m-b-5"></span> Go Back</button>
+
+  <h4 class="m-b-10">Media Info</h4>
+  <h4 class="m-b-10">News ID: {{newsId}}</h4>
+
+  <nz-table #table [nzData]="items"
+            [nzScroll]="{ x: '2000px' }"
+            nzTableLayout="fixed"
+            [nzTotal]="totalItem"
+            [nzFrontPagination]="false"
+            [nzLoading]="loadingTable"
+            [nzShowTotal]="totalTemplate"
+  >
+    <ng-template #totalTemplate let-total>Total {{ total }} items</ng-template>
+
+    <thead>
+    <tr>
+      <th nzWidth="60px" nzLeft></th>
+      <th>File ID</th>
+      <th nzWidth="140px">Media Type</th>
+      <th nzWidth="160px">Media Stream Type</th>
+      <th nzWidth="140px">Resolution</th>
+      <th>File Name</th>
+      <th>File Url</th>
+      <th nzWidth="300px">Checksum</th>
+      <th nzWidth="80px" nzRight>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of table.data; let i=index">
+      <tr>
+        <td nzLeft [nzExpand]="expandSet.has(i)" (nzExpandChange)="onExpandChange(i, $event)"></td>
+        <td>{{item.fileId}}</td>
+        <td>{{item.mediaType | mediaType}}</td>
+        <td>{{item.mediaStreamType | mediaStreamType}}</td>
+        <td>{{item.resolution ?? 0 | videoResolution}}</td>
+        <td>{{item.fileName}}</td>
+        <td>{{item.fileUrl}}</td>
+        <td>{{item.checksum}}</td>
+        <td nzRight>
+          <a class="m-r-5" nz-button nzType="default"
+             nzTrigger="click" [nzDropdownMenu]="editAction"
+             nzShape="circle" nz-dropdown nz-tooltip nzTooltipTitle="Action">
+            <i nz-icon nzType="ellipsis" theme="outline"></i>
+          </a>
+          <nz-dropdown-menu #editAction="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="deleteMediaInfo(item)">
+                <a class="text-danger text-decoration-none">
+                  <i nz-icon nzType="delete" theme="outline"></i>
+                  <span class="m-l-10">Delete Media Info</span>
+                </a>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(i)">
+        <pre>{{ items[i] | json }} </pre>
+      </tr>
+    </ng-container>
+
+    </tbody>
+  </nz-table>
+
+</div>

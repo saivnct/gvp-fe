@@ -1,0 +1,132 @@
+<header class="header-nav">
+  <div class="nav-container">
+    <div class="nav-container__left">
+      <div class="nav-container__logo">
+        <a routerLink="" >
+          <img alt="" class="nav-container__logo-img" src="assets/images/logo.svg"/>
+<!--          <span>JUST WATCH</span>-->
+        </a>
+
+
+        <a (click)="quickViewToggle()" *ngIf="mobileMenuVisible" class="m-l-20 font-size-18">
+          <i nz-icon nzType="appstore" theme="outline" style="color: white"></i>
+        </a>
+        <nz-drawer class="bg-black" [nzBodyStyle]="{ background: '#000000' }"
+          [nzWidth]="140" [nzClosable]="false" [nzVisible]="quickViewVisible" nzPlacement="left" (nzOnClose)="quickViewToggle()">
+          <ng-container *nzDrawerContent>
+            <h4 class="text-white font-size-14 font-weight-bold">CATEGORIES</h4>
+            <nz-list>
+              <a>
+                <nz-list-item *ngFor="let item of items"
+                              (click)="onClickCategory(item)"
+                              class="text-white font-size-12 font-weight-bold">
+                  {{item.catName | uppercase}}
+                </nz-list-item>
+              </a>
+            </nz-list>
+          </ng-container>
+        </nz-drawer>
+
+<!--        <ul class="d-flex align-items-center nav-container__menu">-->
+<!--          <li>-->
+<!--            <a class="nav-container__menu-item__active nav-container__menu-item" href="#home">Home</a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a class="nav-container__menu-item">News</a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a class="nav-container__menu-item">Contact</a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a class="nav-container__menu-item">About</a>-->
+<!--          </li>-->
+
+<!--        </ul>-->
+
+      </div>
+    </div>
+
+    <div class="nav-container__right">
+
+      <div class="d-flex m-r-40">
+        <nz-input-group [nzPrefix]="prefixTemplate" class="bg-transparent">
+          <input nz-input placeholder="Search" [(ngModel)]="search"
+                 (keydown.enter)="onKeyDownSearch($event)"
+                 nzSize="small" class="bg-transparent text-white search-input">
+        </nz-input-group>
+        <ng-template #prefixTemplate>
+          <i nz-icon nzType="search" theme="outline" class="text-white"></i>
+        </ng-template>
+      </div>
+
+      <a (click)="toggleMobileMenu()" *ngIf="mobileMenuVisible">
+          <span nz-icon nzType="menu" style="color: white"
+                class="font-weight-bold font-size-16"
+                nzTheme="outline"></span>
+      </a>
+      <nz-drawer class="bg-black" [nzBodyStyle]="{ background: '#000000' }"
+                 [nzWidth]="280" [nzClosable]="false" [nzVisible]="mobileViewVisible" nzPlacement="right" (nzOnClose)="toggleMobileMenu()">
+        <ng-container *nzDrawerContent>
+          <ul nz-menu nzMode='vertical' class="bg-black">
+            <li nz-menu-item [nzSelected]="menuItem=='browse'" class="text-white" routerLink=""
+                (click)="onClickMenu('browse')">
+              Browse
+            </li>
+            <li nz-menu-item class="text-white" [nzSelected]="menuItem=='forum'" (click)="onClickMenu('forum')">
+              Forum
+            </li>
+            <li nz-menu-item class="text-white" [nzSelected]="menuItem=='news'" (click)="onClickMenu('news')" routerLink="/admin/news" *ngIf="role > 1">
+              News
+            </li>
+            <li nz-menu-item class="text-white" [nzSelected]="menuItem=='profile'" (click)="onClickMenu('profile')" routerLink="/profile" *ngIf="auth.username">
+              Profile
+            </li>
+            <li nz-menu-item class="text-white" [nzSelected]="menuItem=='login'" (click)="onClickMenu('login')" routerLink="/login" *ngIf="auth && !auth.username">
+              <div class="d-flex align-items-center">
+                <span nz-icon nzType="login" nzTheme="outline"></span>
+                <span>Login</span>
+              </div>
+            </li>
+            <li nz-menu-item class="text-danger" [nzSelected]="menuItem=='logout'" (click)="onClickMenu('logout')" *ngIf="auth.username">
+              <div class="d-flex align-items-center">
+                <span nz-icon nzType="logout" nzTheme="outline"></span>
+                <span>Log out</span>
+              </div>
+            </li>
+          </ul>
+        </ng-container>
+      </nz-drawer>
+
+      <ul nz-menu [nzMode]="menuMode" class="bg-black" *ngIf="!mobileMenuVisible">
+        <li nz-menu-item [nzSelected]="menuItem=='browse'" class="text-white" routerLink=""
+            (click)="onClickMenu('browse')">
+          Browse
+        </li>
+        <li nz-menu-item class="text-white" [nzSelected]="menuItem=='forum'" (click)="onClickMenu('forum')">
+          Forum
+        </li>
+        <li nz-menu-item class="text-white" [nzSelected]="menuItem=='news'" (click)="onClickMenu('news')" routerLink="/admin/news" *ngIf="role > 1">
+          News
+        </li>
+        <li nz-menu-item class="text-white" [nzSelected]="menuItem=='profile'" (click)="onClickMenu('profile')" routerLink="/profile" *ngIf="auth.username">
+          Profile
+        </li>
+        <li nz-menu-item class="text-white" [nzSelected]="menuItem=='login'" (click)="onClickMenu('login')" routerLink="/login" *ngIf="auth && !auth.username">
+          <div class="d-flex align-items-center">
+            <span nz-icon nzType="login" nzTheme="outline"></span>
+            <span>Login</span>
+          </div>
+        </li>
+        <li nz-menu-item class="text-danger" [nzSelected]="menuItem=='logout'" (click)="onClickMenu('logout')" *ngIf="auth.username">
+          <div class="d-flex align-items-center">
+            <span nz-icon nzType="logout" nzTheme="outline"></span>
+            <span>Log out</span>
+          </div>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+</header>
+

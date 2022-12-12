@@ -1,0 +1,88 @@
+<div class="container-fluid p-0 h-100" style="background-image:url('assets/images/background/black-1.jpeg')">
+  <div class="row no-gutters h-100">
+    <div class="col-lg-4 d-none d-lg-flex" style="background-image:url('assets/images/background/black-2.jpg')">
+      <div class="d-flex h-100 p-h-40 p-v-15 flex-column justify-content-between">
+        <div>
+<!--          <img src="assets/images/logo.svg" alt="">-->
+        </div>
+        <div>
+          <h1 class="text-white m-b-20 font-weight-normal">Exploring Just Watch</h1>
+          <p class="text-white font-size-16 lh-2 w-80 opacity-08">Watch free movies and TV shows online in HD on any device. Just Watch offers streaming movies in genres like Action, Horror, Sci-Fi, Crime and Comedy. Watch now!</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-white">© 2022 Super Movie</span>
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <a class="text-white text-link" href="">Legal</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white text-link" href="">Privacy</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="container h-100">
+        <div class="row no-gutters h-100 align-items-center">
+          <div class="col-md-8 col-lg-7 col-xl-6 mx-auto">
+            <h2 class="text-white">Sign Up</h2>
+            <p class="m-b-30 text-white font-size-14">Create your account to get access</p>
+            <form nz-form [formGroup]="signUpForm" class="login-form" nzLayout="vertical" (ngSubmit)="submitForm()">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="userName"><span class="text-white">Username</span></nz-form-label>
+                <nz-form-control nzErrorTip="Please input your username!">
+                  <input type="text" nz-input formControlName="userName" placeholder="Username" id="userName">
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="email"><span class="text-white">Email</span></nz-form-label>
+                <nz-form-control nzErrorTip="The input is not valid E-mail!">
+                  <input type="text" nz-input formControlName="email" placeholder="Email" id="email">
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="password"><span class="text-white">Password</span></nz-form-label>
+                <nz-form-control nzErrorTip="Please input your Password!">
+                  <input type="password" nz-input formControlName="password" placeholder="Password" id="password">
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label nzFor="checkPassword" nzRequired><span class="text-white">Confirm Password</span></nz-form-label>
+                <nz-form-control nzErrorTip="Please confirm your password!">
+                  <input nz-input type="password" formControlName="checkPassword"  placeholder="Confirm Password" id="checkPassword">
+                </nz-form-control>
+              </nz-form-item>
+              <div class="d-flex align-items-center justify-content-between">
+<!--                <nz-form-item>-->
+<!--                  <nz-form-control>-->
+<!--                    <label nz-checkbox formControlName="agree">-->
+<!--                      <span class="text-white">I have read the <a>agreement</a></span>-->
+<!--                    </label>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+                <nz-form-item>
+                  <nz-form-control>
+                    <div >
+                      <button nz-button class="login-form-button"
+                              [disabled]="!signUpForm.valid"
+                              [nzType]="'primary'">Sign Up</button>
+                    </div>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isModalVisible" [nzOkLoading]="isOkLoading"
+          nzTitle="Verify Authentication Code"
+          (nzOnCancel)="handleModalCancel()" (nzOnOk)="handleModalOk()">
+  <ng-container *nzModalContent>
+    <input [(ngModel)]="authenCode" type="text" nz-input placeholder="Authen Code"/>
+  </ng-container>
+</nz-modal>

@@ -1,0 +1,40 @@
+#Run envoy proxy
+cd docker
+docker-compose up
+docker-compose ps
+docker-compose down
+
+Move port 8081 -> 8082
+
+
+#Run grpcwebproxy
+  cd /Users/user/go/bin
+
+ ./grpcwebproxy --backend_addr=localhost:50051 --server_http_debug_port=8084 --server_http_tls_port=8444 --use_websockets --allow_all_origins --server_tls_cert_file=/Users/genius/workspace/streaming/fe/gvp-fe/src/proxy/serverca.crt --server_tls_key_file=/Users/genius/workspace/streaming/fe/gvp-fe/src/proxy/servercakey.pem
+
+ ./grpcwebproxy --backend_addr=192.168.1.14:50050 --use_websockets --websocket_compression_mode=disabled --allow_all_origins --server_tls_cert_file=/Users/genius/workspace/streaming/fe/gvp-fe/src/proxy/serverca.crt --server_tls_key_file=/Users/genius/workspace/streaming/fe/gvp-fe/src/proxy/servercakey.pem
+
+
+GRPC_PORT=50051
+GRPC_TLS=false
+GRPC_AUTHENTICATION=true
+GRPC_DUMMY_TEST_MODE=false
+GRPC_DUMMY_USER=test
+
+S3_ACK=AKIAXEC2GPFU47LAZFMN
+S3_SCK=06nMPblsoqxcExVaMjMU6Z3C+g3hTLD5A+94b5pm
+S3_BUCKET=ivra-xpm-media-test
+S3_REGION=ap-southeast-1
+
+
+
+HTTP_PORT=9001
+
+
+MONGO_CONNECTION_STR=mongodb://gvpadmin:123456@localhost:37017/gvpdb
+MONGO_DB=gvpdb
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWD=123456
+REDIS_DB=0

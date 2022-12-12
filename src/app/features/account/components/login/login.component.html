@@ -1,0 +1,67 @@
+<div class="container-fluid p-0 h-100" style="background-image:url('assets/images/background/black-1.jpeg')">
+  <div class="row no-gutters h-100">
+    <div class="col-lg-4 d-none d-lg-flex" style="background-image:url('assets/images/background/black-2.jpg')">
+      <div class="d-flex h-100 p-h-40 p-v-15 flex-column justify-content-between">
+        <div>
+<!--          <img src="assets/images/logo.svg" alt="">-->
+        </div>
+        <div>
+          <h1 class="text-white m-b-20 font-weight-normal">Exploring Just Watch</h1>
+          <p class="text-white font-size-16 lh-2 w-80 opacity-08">Watch free movies and TV shows online in HD on any device. Just Watch offers streaming movies in genres like Action, Horror, Sci-Fi, Crime and Comedy. Watch now!</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-white">© 2022 Super Movie</span>
+          <ul class="list-inline m-l-20">
+            <li class="list-inline-item">
+              <a class="text-white text-link" href="">Legal</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white text-link" href="">Privacy</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="container h-100">
+        <div class="row no-gutters h-100 align-items-center m-10">
+          <div class="col-md-8 col-lg-7 col-xl-6 mx-auto">
+            <h2 class="text-white">Sign In</h2>
+            <p class="m-b-30 text-white font-size-14">Enter your credential to get access</p>
+            <form nz-form [formGroup]="loginForm" nzLayout="vertical" class="login-form" (ngSubmit)="submitForm()">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="userName"><span class="text-white">Username</span></nz-form-label>
+                <nz-form-control nzErrorTip="Please input your username!">
+                  <nz-input-group [nzPrefix]="prefixUser">
+                    <input type="text" nz-input formControlName="userName" placeholder="Username">
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label class="text-white" nzRequired nzFor="password"><span class="text-white">Password</span></nz-form-label>
+<!--                <a class="font-size-13 p-t-10 text-muted" style="position:absolute; right: 0" [routerLink]="['/reset-password']">Forget Password?</a>-->
+                <nz-form-control nzErrorTip="Please input your Password!">
+                  <nz-input-group [nzPrefix]="prefixLock">
+                    <input type="password" nz-input formControlName="password" placeholder="Password">
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-control>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="font-size-15 text-muted">Don't have an account? <a class="font-size-15" [routerLink]="['/register']"> Signup</a></span>
+                    <button nz-button class="login-form-button"
+                            [disabled]="!loginForm.valid"
+                            [nzType]="'primary'">Sign In</button>
+                  </div>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+            <ng-template #prefixUser><i nz-icon nzType="user"></i></ng-template>
+            <ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

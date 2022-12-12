@@ -1,0 +1,156 @@
+<div style="background-color: #121212;">
+  <div class="container row mx-auto p-sm-20 p-5 border-radius-6" style="max-width: 1200px; background-color: #222222;">
+    <nz-skeleton [nzLoading]="loading" [nzActive]="loading">
+      <h2 class="font-weight-bold m-b-10 font-size-18" style="color: #949494;">{{item.title}}</h2>
+<!--      <div class="media align-items-center m-b-25">-->
+<!--        <nz-avatar nzSrc="assets/images/avatars/thumb-6.jpg"></nz-avatar>-->
+<!--        <div class="m-l-10">-->
+<!--          <h6 class="m-b-0 font-size-12">Actress: {{item.participants}}</h6>-->
+<!--&lt;!&ndash;          <span class="text-muted font-size-10">{{item.description}}</span>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="col-12 video-container d-flex justify-content-center">
+        <video #videoPlayer class="video-player bg-black mx-auto" id='plyrID' controls crossorigin playsinline [poster]="thumbnailUrl">
+<!--          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">-->
+<!--          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">-->
+<!--          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">-->
+
+<!--          &lt;!&ndash; Caption files &ndash;&gt;-->
+<!--          <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"-->
+<!--                 default>-->
+<!--          <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">-->
+<!--          &lt;!&ndash; Fallback for browsers that don't support the <video> element &ndash;&gt;-->
+<!--          <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>-->
+
+<!--          <source type="application/x-mpegURL" src="https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8">-->
+<!--          <source type="application/x-mpegURL" [src]="urlOnDemand">-->
+<!--          <source type="application/x-mpegURL" src="https://ivra-xpm-media-test.s3.ap-southeast-1.amazonaws.com/4b1df48b-af19-4cbe-817c-65cd09aef613/livestream.m3u8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAXEC2GPFU47LAZFMN%2F20221118%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20221118T025831Z&X-Amz-Expires=21600&X-Amz-SignedHeaders=host&X-Amz-Signature=fbd9edde41c226b69bf732bb5325c5c632228a44cefc0abae423d10d36b607fb">-->
+
+        </video>
+      </div>
+
+      <div class="row p-sm-0 p-10">
+        <div class="col-md-8 col-sm-12">
+          <div class="m-t-30 lh-1-8 font-size-14 text-white">
+            {{item.description}}
+          </div>
+          <div *ngIf="participants.length>0">
+            <h4 class="m-t-30 text-white">Actors</h4>
+            <a>
+              <nz-tag *ngFor="let item of participants" class="m-v-5"
+                      (click)="onClickActor(item)"
+                      [nzColor]="'blue'">{{item}}</nz-tag>
+            </a>
+          </div>
+          <div class="d-flex m-t-40 align-items-center text-white">
+            <span class="text-white font-size-16">Like video </span>
+            <button class="font-size-14 m-b-5" nz-button nzType="link" (click)="likeVideo()" nzShape="circle">
+              <i nz-icon nzType="like" nzTheme="outline" *ngIf="!isLikeVideo"></i>
+              <i nz-icon nzType="like" nzTheme="fill" disabled="true" *ngIf="isLikeVideo"></i>
+            </button>
+            <span class="text-white font-size-16 m-l-20">{{likePoint}} Likes</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <nz-rate nzCount="10" [(ngModel)]="ratingPointByUser" [nzDisabled]="isRateVideo" *ngIf="!isRateVideo"
+                     (nzOnHoverChange)="onRatingHover($event)"
+                     (ngModelChange)="rateVideo(ratingPointByUser)"
+            ></nz-rate>
+            <nz-rate nzCount="10" [(ngModel)]="ratingPoint" [nzDisabled]="true" *ngIf="isRateVideo"
+            ></nz-rate>
+<!--            <span class="text-white font-size-16 m-l-20" *ngIf="!isRateVideo">{{ratingPointByUser}}/10</span>-->
+            <span class="text-white font-size-16 m-l-20">({{ratingPoint}}/10 points)</span>
+          </div>
+          <hr>
+          <div class="m-t-40 bg-white p-20 border-radius-4">
+            <h4 class="font-size-14">{{commentTotal}} Comments</h4>
+            <nz-tag [nzColor]="'volcano'" *ngIf="!auth.username" class="m-t-5">
+              <p class="text-danger m-t-10 font-size-13">You must be logged in to post a comment.</p>
+            </nz-tag>
+
+            <textarea *ngIf="auth.username" rows="4" nz-input [(ngModel)]="commentContent"></textarea>
+            <div class="" *ngIf="auth.username">
+<!--              <input [(ngModel)]="commentContent" class="chat-input" type="text" placeholder="Type a message..." (keydown.enter)="sendComment(commentContent);$event.preventDefault()">-->
+              <ul class="list-inline d-flex align-items-center m-v-10">
+<!--                <li class="list-inline-item">-->
+<!--                  <a class="text-gray font-size-20" nz-tooltip nzTooltipTitle="Emoji">-->
+<!--                    <i nz-icon nzType="smile" theme="outline"></i>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="list-inline-item">-->
+<!--                  <a class="text-gray font-size-20" nz-tooltip nzTooltipTitle="Attachment">-->
+<!--                    <i nz-icon nzType="paper-clip" theme="outline"></i>-->
+<!--                  </a>-->
+<!--                </li>-->
+                <li class="list-inline-item">
+                  <button class="d-block" nz-button nzType="primary" (click)="sendComment(commentContent)">
+                    <span class="m-r-10">Send</span>
+<!--                    <i class="far fa-paper-plane"></i>-->
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <nz-list [nzDataSource]="comments" [nzRenderItem]="comment" [nzItemLayout]="'vertical'" [nzPagination]="pagination">
+              <ng-template #comment let-item>
+                <nz-list-item class="d-block font-size-12" [nzContent]="item.content" [nzActions]="[action]">
+                  <ng-template #action class="m-v-0">
+<!--                    <ul class="list-inline">-->
+<!--                      <li class="d-inline-block m-r-20">-->
+<!--                        <a class="text-dark font-size-12" href="javascript:void(0)">-->
+<!--                          <i class="m-r-5" nz-icon nzType="like" theme="outline"></i>-->
+<!--                          <span>{{item.likes}}</span>-->
+<!--                        </a>-->
+<!--                      </li>-->
+<!--                      <li class="d-inline-block m-r-30">-->
+<!--                        <a class="text-dark font-size-12" href="javascript:void(0)">-->
+<!--                          <i class="m-r-5" nz-icon nzType="message" theme="outline"></i>-->
+<!--                          <span>Reply</span>-->
+<!--                        </a>-->
+<!--                      </li>-->
+<!--                    </ul>-->
+                  </ng-template>
+                  <nz-list-item-meta class="movie-detail__list-item_meta"
+                                     [nzTitle]="commentTitle"
+                                     [nzAvatar]="item.img"
+                                     [nzDescription]="item.commentAt | dateFromTimestamp">
+                    <ng-template #commentTitle class="m-b-0">
+                      <a class="font-size-12 m-b-0" href="">{{item.username}}</a>
+                    </ng-template>
+                  </nz-list-item-meta>
+                </nz-list-item>
+              </ng-template>
+              <ng-template #pagination>
+<!--                <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>-->
+              </ng-template>
+
+              <div class="text-center m-v-10" nz-list-load-more *ngIf="comments.length < commentTotal">
+                <button nz-button *ngIf="!loadingMoreComment" (click)="onLoadMoreComment()">Loading more</button>
+              </div>
+            </nz-list>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="m-5 m-t-20">
+
+            <h4 class="m-t-30 text-white">Top View</h4>
+            <nz-list>
+              <nz-list-item *ngFor="let item of itemsSuggestion">
+                <app-movie-list-card [item]="item" (click)="onClickSuggestItem(item)"></app-movie-list-card>
+              </nz-list-item>
+            </nz-list>
+
+            <h4 class="m-t-30 text-white">Tags</h4>
+            <a>
+              <nz-tag *ngFor="let item of tags" class="m-v-5"
+                      (click)="onClickTag(item)"
+                      [nzColor]="'orange'">#{{item}}</nz-tag>
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+    </nz-skeleton>
+  </div>
+</div>

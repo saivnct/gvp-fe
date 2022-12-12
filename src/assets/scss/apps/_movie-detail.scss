@@ -1,0 +1,82 @@
+.movie-detail {
+
+  &__list-item_meta {
+    margin-bottom: 0rem;
+  }
+}
+
+.ant-list-vertical .ant-list-item-meta-title {
+  margin-bottom: 0;
+}
+
+.ant-list-item-meta-description {
+  font-size: 10px;
+}
+
+.ant-list-vertical .ant-list-item-action {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+$chat-footer-height: 75px;
+.conversation-footer {
+  position: absolute;
+  height: $chat-footer-height;
+  padding: 0px 25px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  bottom:  0px;
+
+  //@include screen-mobile {
+  //  bottom:  -$chat-footer-height;
+  //}
+
+  .chat-input {
+    border: 0px;
+    line-height: $chat-footer-height;
+    outline: 0;
+    width: 100%;
+
+    //@include placeholder {
+    //  color: $input-color-placeholder;
+    //}
+  }
+}
+
+$input-color-placeholder:        rgba(#72849a, 0.4) !default;
+chat-input {
+  border: 0px;
+  line-height: $chat-footer-height;
+  outline: 0;
+  width: 100%;
+
+  //@include placeholder {
+  //  color: $input-color-placeholder;
+  //}
+}
+
+.video-player {
+  width: 960px;
+  height: 540px;
+
+  @media only screen and (max-width: 1200px) {
+    width: 720px;
+    height: 405px;
+  }
+
+  @media only screen and (max-width: 992px) {
+    width: 640px;
+    height: 360px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 426px;
+    height: 240px;
+  }
+
+  @media only screen and (max-width: 576px) {
+    width: 320px;
+    height: 180px;
+  }
+}

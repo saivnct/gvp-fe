@@ -1,0 +1,26 @@
+<nz-card [nzCover]="coverTemplate" class="movie-card" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()"
+(touchstart)="mouseenter()" >
+  <nz-skeleton [nzLoading]="loading" [nzActive]="loading">
+    <h4 class="m-b-0 p-5 text-danger font-size-14 absolute bottom-0 start-0 end-0 text-center bg-black bg-opacity-75">{{item.title}}</h4>
+    <div class="d-flex align-items-center justify-content-between movie-card__score absolute top-0 start-0 end-0 bg-black bg-opacity-75">
+      <p class="m-h-5 m-b-0 font-size-14 d-flex align-items-center">
+        <span nz-icon [nzType]="'like'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#365bb9'"></span>
+        <span class="text-white m-l-5">{{item.likes}}</span>
+      </p>
+      <p class="m-h-5 m-b-0 font-size-14 d-flex align-items-center">
+        <span nz-icon [nzType]="'eye'" [nzTheme]="'twotone'"></span>
+        <span class="text-white m-l-5 m-r-5">{{item.view}}</span>
+      </p>
+    </div>
+    <ng-template #coverTemplate>
+<!--      <img *ngIf="!loading" class="w-100 movie-card__img-cover-gif" [alt]="item.title" src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"/>-->
+      <video #videoPlayer class="w-100 movie-card__img-cover-gif">
+<!--        <source-->
+<!--          [src]="previewVideoSource"-->
+<!--        />-->
+<!--        <source [src]="previewVideoSource" type="video/mp4" />-->
+      </video>
+      <img class="w-100 movie-card__img-cover" *ngIf="!loading" [alt]="item.title" [src]="previewImage"/>
+    </ng-template>
+  </nz-skeleton>
+</nz-card>

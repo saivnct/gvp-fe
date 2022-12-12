@@ -1,0 +1,220 @@
+<div class="m-20">
+  <button nz-button nzType="default" nzSize="small" nzShape="round" class="m-t-5 m-b-15" routerLink=""
+  ><span nz-icon nzType="home" class="m-t-0 m-b-5"></span> Go Home</button>
+
+  <h4 class="m-b-10">News List</h4>
+  <button nz-button nzType="primary" nzSize="small" nzShape="round" class="m-v-10"
+          (click)="doCreateNews()"
+  >Create News</button>
+<!--  <button (click)="onClickTest()" nz-button nzType="default">-->
+<!--    <i nz-icon nzType="arrow-left"></i>-->
+<!--  </button>-->
+<!--  <input type="file" class="file-upload" (change)="onFileSelected($event)" >-->
+<!--  <button (click)="onClickTest()">Click test</button>-->
+<!--  <div class="row m-b-20">-->
+<!--    <div class="col-md-12">-->
+<!--      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">-->
+<!--        <input [(ngModel)]="mainChainAddress" type="text" nz-input placeholder="Main chain address" />-->
+<!--      </nz-input-group>-->
+<!--      <ng-template #suffixIconButton>-->
+<!--        <button nz-button nzType="primary"-->
+<!--                (click)="searchByAddress()"-->
+<!--                nzSearch><i nz-icon nzType="search"></i></button>-->
+<!--      </ng-template>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="d-flex align-items-center">-->
+<!--    <h6 class="m-r-15 m-v-0">Category</h6>-->
+<!--    <nz-radio-group [ngModel]="category" (ngModelChange)="onChangeCategory($event)">-->
+<!--      <label nz-radio-button nzValue="0">All</label>-->
+<!--      <label nz-radio-button nzValue="{{TYPE_USDT_KOKE}}">USDT &#8594; KK</label>-->
+<!--      <label nz-radio-button nzValue="{{TYPE_KOKE_USDT}}">KK &#8594; USDT</label>-->
+<!--    </nz-radio-group>-->
+<!--  </div>-->
+
+<!--  <div class="m-v-15 d-flex align-items-center">-->
+<!--    <h6 class="m-r-15 m-v-0">From date</h6>-->
+<!--    <nz-date-picker [(ngModel)]="dateFrom"-->
+<!--                    [nzFormat]="dateFormat"-->
+<!--                    (ngModelChange)="onChangeDateFrom($event)"></nz-date-picker>-->
+
+<!--    <h6 class="m-l-45 m-r-15 m-v-0">To date</h6>-->
+<!--    <nz-date-picker [(ngModel)]="dateTo"-->
+<!--                    [nzFormat]="dateFormat"-->
+<!--                    (ngModelChange)="onChangeDateTo($event)"></nz-date-picker>-->
+<!--  </div>-->
+
+  <nz-table #table [nzData]="items"
+            [nzScroll]="{ x: '5400px' }"
+            nzTableLayout="fixed"
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalItem"
+            [nzPageIndex]="currentPage+1"
+            [nzShowSizeChanger]="true"
+            [nzShowQuickJumper]="true"
+            [nzFrontPagination]="false"
+            (nzPageIndexChange)="onPageIndexChange($event)"
+            (nzPageSizeChange)="onPageSizeChange($event)"
+            [nzLoading]="loadingTable"
+            [nzShowTotal]="totalTemplate"
+  >
+    <ng-template #totalTemplate let-total>Total {{ total }} items</ng-template>
+
+    <thead>
+    <tr>
+      <th nzWidth="60px" nzLeft></th>
+      <th nzWidth="320px">News ID</th>
+      <th nzWidth="160px">Author</th>
+      <th>Title</th>
+      <th nzWidth="200px">Preview Image List Info</th>
+      <th nzWidth="160px">Media List Info</th>
+      <th>Media Enc Key</th>
+      <th>Media Enc IV</th>
+      <th>Participants</th>
+      <th>Description</th>
+      <th>Category IDs</th>
+      <th>Tags</th>
+      <th nzWidth="160px">Enable Comment</th>
+      <th nzWidth="140px">View</th>
+      <th nzWidth="140px">Likes</th>
+      <th nzWidth="220px">Liked By Requested Session</th>
+      <th nzWidth="100px">Rating</th>
+      <th nzWidth="220px">Rated By Requested Session</th>
+      <th nzWidth="100px">Status</th>
+
+      <th nzWidth="140px">Week Views</th>
+      <th nzWidth="140px">Month Views</th>
+      <th nzWidth="170px">Current Views Week</th>
+      <th nzWidth="170px">Current Views Month</th>
+      <th nzWidth="140px">Week Likes</th>
+      <th nzWidth="140px">Month Likes</th>
+      <th nzWidth="170px">Current Likes Week</th>
+      <th nzWidth="170px">Current Likes Month</th>
+
+      <th nzWidth="80px" nzRight>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of table.data; let i=index">
+      <tr>
+        <td nzLeft [nzExpand]="expandSet.has(i)" (nzExpandChange)="onExpandChange(i, $event)"></td>
+        <td nzEllipsis>{{item.newsId}}</td>
+        <td>{{item.author}}</td>
+        <td>{{item.title}}</td>
+        <td>
+          <button nz-button nzType="default" nzSize="small" nzShape="round" class=""
+                  (click)="viewPreviewImageInfo(item.newsId)">{{item.previewImageInfos.length}} items</button>
+        </td>
+        <td>
+          <button nz-button nzType="default" nzSize="small" nzShape="round" class=""
+                  (click)="viewMediaInfo(item.newsId)">{{item.mediaInfos.length}} items</button>
+        </td>
+        <td>{{item.mediaEncKey}}</td>
+        <td>{{item.mediaEncIV}}</td>
+        <td>{{item.participants}}</td>
+        <td nzEllipsis nz-tooltip [nzTooltipTitle]="item.description">{{item.description}}</td>
+        <td>{{item.catIds}}</td>
+        <td>{{item.tags}}</td>
+        <td>{{item.enableComment}}</td>
+        <td>{{item.view}}</td>
+        <td>{{item.likes}}</td>
+        <td>{{item.likedByRequestedSession}}</td>
+        <td>{{item.rating}}</td>
+        <td>{{item.ratedByRequestedSession}}</td>
+        <td>{{item.status | newsStatus}}</td>
+
+        <td>{{item.weekViews}}</td>
+        <td>{{item.monthViews}}</td>
+        <td>{{item.currentViewsWeek | dateFromTimestamp}}</td>
+        <td>{{item.currentViewsMonth | dateFromTimestamp}}</td>
+        <td>{{item.weekLikes}}</td>
+        <td>{{item.monthLikes}}</td>
+        <td>{{item.currentLikesWeek | dateFromTimestamp}}</td>
+        <td>{{item.currentLikesMonth | dateFromTimestamp}}</td>
+
+        <td nzRight>
+          <a class="m-r-5" nz-button nzType="default"
+             nzTrigger="click" [nzDropdownMenu]="editAction"
+             nzShape="circle" nz-dropdown nz-tooltip nzTooltipTitle="Action">
+            <i nz-icon nzType="ellipsis" theme="outline"></i>
+          </a>
+          <nz-dropdown-menu #editAction="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="uploadMediaInfoLocal(item)">
+                <a>
+                  <i nz-icon nzType="cloud-upload" theme="outline"></i>
+                  <span class="m-l-10">Upload Media Local</span>
+                </a>
+              </li>
+              <li nz-menu-item (click)="uploadMediaInfoUrl(item)">
+                <a>
+                  <i nz-icon nzType="cloud-upload" theme="outline"></i>
+                  <span class="m-l-10">Upload Media By URL</span>
+                </a>
+              </li>
+              <li nz-menu-item (click)="uploadPreviewImageLocal(item)">
+                <a>
+                  <i nz-icon nzType="cloud-upload" theme="outline"></i>
+                  <span class="m-l-10">Upload Preview Image Local</span>
+                </a>
+              </li>
+              <li nz-menu-item (click)="uploadPreviewImageUrl(item)">
+                <a>
+                  <i nz-icon nzType="cloud-upload" theme="outline"></i>
+                  <span class="m-l-10">Upload Preview Image By URL</span>
+                </a>
+              </li>
+
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="updateNewsInfo(item)">
+                <a>
+                  <i nz-icon nzType="edit" theme="outline"></i>
+                  <span class="m-l-10">Update News Info</span>
+                </a>
+              </li>
+
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="deleteNews(item)">
+                <a class="text-danger text-decoration-none">
+                  <i nz-icon nzType="delete" theme="outline"></i>
+                  <span class="m-l-10">Delete</span>
+                </a>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+      </tr>
+      <tr [nzExpand]="expandSet.has(i)">
+        <pre>{{ items[i] | json }} </pre>
+      </tr>
+    </ng-container>
+
+    </tbody>
+  </nz-table>
+
+</div>
+
+
+<nz-modal [(nzVisible)]="isModalInfoVisible" nzTitle="{{modalInfoTitle}}"
+          (nzOnCancel)="handleModalInfoCancel()"
+          (nzOnOk)="handleModalInfoOk()">
+  <ng-container *nzModalContent>
+    <input nz-input placeholder="Abc"   />
+
+    <nz-upload
+      nzType="drag"
+      [nzMultiple]="true"
+      [(nzFileList)]="fileList"
+      [nzBeforeUpload]="beforeUpload"
+      (nzChange)="handleChange($event)"
+    >
+      <p class="ant-upload-drag-icon">
+        <span nz-icon nzType="inbox"></span>
+      </p>
+      <p class="ant-upload-text">Click or drag file to this area to upload</p>
+      <p class="ant-upload-hint">
+        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
+      </p>
+    </nz-upload>
+  </ng-container>
+</nz-modal>

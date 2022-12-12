@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import './assets/scss/app.scss';
+
+// RESPONSIVE BREAKPOINTS
+$bp-largest: 75em;   // 1200px
+$bp-large: 62em;   // 992px
+$bp-medium: 48em;    // 768px;
+$bp-small: 36em;    // 576px;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  //background-color: $color-grey-light-1;
+
+  box-sizing: border-box;
+  font-size: 62.5%;   // 1rem = 10px, 10px/16px
+
+  @media only screen and (max-width: $bp-large) {
+    font-size: 56.25%; //1 rem = 9px, 9/16 = 50%
+  }
+
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 50%; //1 rem = 8px, 8/16 = 50%
+  }
+
+
+}
+
+body {
+
+}

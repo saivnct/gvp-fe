@@ -1,0 +1,111 @@
+<div class="home">
+  <div class="home__container m-10">
+
+    <div class="row mx-auto" style="max-width: 1200px">
+
+      <div class="col-xl-2 col-lg-2 col-md-3" *ngIf="categoryListVisible">
+        <div class="m-b-30 home__categories" *ngIf="categories.length > 0">
+          <h4 class="text-white m-b-10 font-weight-bold">CATEGORIES</h4>
+          <nz-list nzBordered>
+            <a>
+              <nz-list-item *ngFor="let item of categories"
+                            (click)="onClickCategory(item)"
+                            class="text-white font-size-12 font-weight-bold">
+                {{item.catName | uppercase}}
+              </nz-list-item>
+            </a>
+          </nz-list>
+        </div>
+      </div>
+
+      <div class="col-xl-7 col-lg-7 col-md-9 col-sm-12">
+
+<!--        <div style="height: 50rem;">-->
+<!--          <swiper [navigation]="true" class="mySwiper">-->
+<!--            <ng-template swiperSlide>Slide 1</ng-template-->
+<!--            ><ng-template swiperSlide>Slide 2</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 3</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 4</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 5</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 6</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 7</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 8</ng-template-->
+<!--          ><ng-template swiperSlide>Slide 9</ng-template>-->
+<!--          </swiper>-->
+<!--        </div>-->
+
+        <div class="m-b-30 w-100 home__grid-movie">
+          <h4 *ngIf="title" class="m-b-20 text-white font-size-20">
+            <span *ngIf="currentMode==modes.HOME">{{title}}</span>
+            <span *ngIf="currentMode==modes.CATEGORY">Movie: {{selectedCategory?.catName}}</span>
+            <span *ngIf="currentMode==modes.TAG">Tag: {{title}}</span>
+            <span *ngIf="currentMode==modes.SEARCH">Search: {{title}}</span>
+            <span *ngIf="currentMode==modes.ACTOR">Actor: {{title}}</span>
+          </h4>
+
+          <div class="row w-100" *ngIf="currentMode==modes.HOME">
+            <div class="row m-b-30" *ngFor="let categoryInfo of categories">
+              <h4 class="m-b-10 m-t-5 text-white font-size-18" *ngIf="itemsCat.get(categoryInfo.catId)?.length ?? 0 > 0">
+                <div class="d-flex align-items-center">
+                  <span nz-icon nzType="star" nzTheme="twotone" [nzTwotoneColor]="'#ffde03'" class="m-r-5"></span>
+                  <span style="color: #ffde03">{{categoryInfo.catName | uppercase}}</span>
+<!--                  <span style="color: #ffde03">{{categoryInfo.catName | uppercase}}</span>-->
+                </div>
+              </h4>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-12" *ngFor="let item of itemsCat.get(categoryInfo.catId)">
+                <app-movie-card [item]="item" (click)="onClick(item)"></app-movie-card>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button class="d-inline" nz-button *ngIf="itemsCat.get(categoryInfo.catId)?.length ?? 0 > 0" (click)="onClickCategory(categoryInfo)">See more</button>
+              </div>
+              <!--              <nz-empty nzNotFoundImage="simple" *ngIf="itemsCat.get(categoryInfo.catId)?.length == 0"></nz-empty>-->
+            </div>
+          </div>
+
+          <div class="row w-100" *ngIf="currentMode!=modes.HOME">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-12" *ngFor="let item of items">
+              <app-movie-card [item]="item" (click)="onClick(item)"></app-movie-card>
+            </div>
+            <nz-empty nzNotFoundImage="simple" *ngIf="items.length == 0 && !loading"></nz-empty>
+          </div>
+          <div class="m-t-30 m-b-20 text-center" *ngIf="currentMode!=modes.HOME">
+            <nz-pagination [nzPageIndex]="1" [nzTotal]="totalItem"
+                           nzShowSizeChanger [nzPageSize]="pageSize"
+                           (nzPageIndexChange)="onPageIndexChange($event)"
+                           (nzPageSizeChange)="onPageSizeChange($event)"
+            ></nz-pagination>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-3">
+        <div class="m-b-30 home__top-view" *ngIf="itemsSuggestion.length > 0">
+          <div class="d-flex align-items-center">
+            <span class="text-white font-size-13 m-r-10">MOST VIEW IN</span>
+            <nz-radio-group [(ngModel)]="topViewType" (ngModelChange)="onChangeSuggestionType($event)" nzButtonStyle="solid">
+              <label nz-radio-button nzValue="week" class="font-size-10">WEEK</label>
+              <label nz-radio-button nzValue="month" class="font-size-10">MONTH</label>
+            </nz-radio-group>
+          </div>
+
+          <nz-list>
+            <nz-list-item *ngFor="let item of itemsSuggestion">
+              <app-movie-list-card [item]="item" (click)="onClickSuggestItem(item)"></app-movie-list-card>
+            </nz-list-item>
+          </nz-list>
+        </div>
+
+        <div class="home__tags" *ngIf="tags.length > 0">
+          <h4 class="text-white">Tags</h4>
+          <a>
+            <nz-tag *ngFor="let item of tags" class="m-v-5"
+                    (click)="onClickTag(item)"
+                    [nzColor]="'orange'">#{{item}}</nz-tag>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
